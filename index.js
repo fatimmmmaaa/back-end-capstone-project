@@ -26,6 +26,7 @@ app.get('/', async (req, res) => {
 
 //error handler
 app.use((error, req, res, next) => {
+    console.log("errorHandler")
     res.status(500).json({error})
 })
 
