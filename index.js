@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 import morgan from "morgan";
 import cors from "cors";
 import { connect } from "./db/connect.js";
-import workoutRouter from "./routes/Workout.js"
+import workoutRouter from "./routes/Workout.js";
 
 
 dotenv.config();

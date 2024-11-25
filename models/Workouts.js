@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 const workoutSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true, // Ensure each workout has a unique name
+        trim: true 
     },
     exercises: [
         {
@@ -14,16 +16,28 @@ const workoutSchema = new mongoose.Schema({
             sets: {type: Number, required: true}
         }
     ],
-    // intensity: {
-    //     type: String,
-    //     enum: ["beginner", "intermediate", "advanced"],
-    //     required: true
 
-    // }, 
+    //change intensity
+    intensity: {
+        type: String,
+        enum: ["beginner", "intermediate", "advanced"],
+        required: true
+
+    }, 
+
     powerUp:{
         type: Number,
         required: true
+    },
+
+    character: {
+        type: String,
+        required: true
     }
-})
+});
+
+// index to improve search performance
+workoutSchema.index({name: 1});
+
 
 export default mongoose.model ("Workouts", workoutSchema);
