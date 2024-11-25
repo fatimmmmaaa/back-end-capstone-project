@@ -1,8 +1,8 @@
 import express from "express";
+import mongoose from "mongoose";
 import Workouts from "../models/Workouts.js"
 
 const router = express.Router();
-
 
 
 /***
@@ -17,6 +17,29 @@ router.get('/', async (req, res) => {
       return res.status(500).json({ message: error.message });
   }
 });
+
+// Get a single workout by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if the ID is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
+    const workout = await Workouts.findById(id);
+
+    if (!workout) {
+      return res.status(404).json({ message: "Workout not found" });
+    }
+
+    return res.status(200).json(workout);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 
 
 
