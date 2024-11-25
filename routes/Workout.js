@@ -99,5 +99,55 @@ router.post('/:id/exercise', async (req, res) => {
     }
   });
   
+// PUT: Update a workout by ID
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Checks if ID is valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
+    // Finds workout by ID and updates with the new data
+    const updatedWorkout = await Workouts.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedWorkout) {
+      return res.status(404).json({ message: "Workout not found" });
+    }
+
+    return res.status(200).json(updatedWorkout);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+// DELETE:
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
+    // Finds workout by ID and deletes it
+    const deletedWorkout = await Workouts.findByIdAndDelete(id);
+
+    if (!deletedWorkout) {
+      return res.status(404).json({ message: "Workout not found" });
+    }
+
+    return res.status(200).json({ message: "Workout deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 
 export default router;
